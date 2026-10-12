@@ -12,7 +12,7 @@ public final class DBConnection {
     private static final String USER = "root";
 
     // Replace this with your actual MySQL root password
-    private static final String PASS = "Divi@123";
+    private static final String PASS = "your_mysql_root_password";
 
     private DBConnection() {
     }
