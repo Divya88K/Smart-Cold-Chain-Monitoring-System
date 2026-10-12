@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Cold Chain Monitoring and Shipment Management System (Java)
 Java Swing desktop app + JDBC/MySQL layer + Servlet placeholder. Layers: Swing UI -> Service -> DAO -> JDBC -> MySQL.
 
@@ -14,3 +15,7 @@ web/ShipmentServlet.java (needs servlet-api / Tomcat) exposes GET/DELETE /api/sh
 
 ## Java concepts shown
 Classes/objects/constructors (model), encapsulation, inheritance (Entity), interface+polymorphism (Dao: InMemory/Jdbc), packages, custom exception, collections (ArrayList, HashMap, LinkedHashMap, Deque), lambdas/streams, multithreading (SensorSimulator), file handling + CSV (CsvUtil), JDBC CRUD, MVC.
+=======
+# Smart-Cold-Chain-Monitoring-System
+Java-based cold chain shipment management and temperature monitoring system
+>>>>>>> 0da484e1401bae95512a4d9efd1612c1cc925355
