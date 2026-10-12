@@ -1,0 +1,11 @@
+*.class
+build/
+out/
+.vscode/
+.idea/
+*.log
+.env
+.env.*
+!.env.example
+.DS_Store
+Thumbs.db

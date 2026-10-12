@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColdChain - Login & Sign Up</title>
+    <style>
+        * { box-sizing: border-box; }
+        body { margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center; font-family: Arial, sans-serif; background: #eef3f9; }
+        .card { width: 90%; max-width: 430px; padding: 32px; background: white; border-radius: 16px; box-shadow: 0 8px 30px rgba(0,0,0,.1); }
+        h1, .subtitle { text-align: center; }
+        h1 { color: #132d4e; }
+        .subtitle { color: #718096; margin-bottom: 25px; }
+        label { display: block; margin: 15px 0 7px; font-weight: bold; color: #253b56; }
+        input { width: 100%; padding: 12px; border: 1px solid #cbd5e0; border-radius: 8px; font-size: 15px; }
+        button { width: 100%; padding: 13px; margin-top: 22px; border: 0; border-radius: 8px; background: #1765e8; color: white; font-size: 16px; font-weight: bold; cursor: pointer; }
+        button:disabled { opacity: .6; }
+        .message { margin-top: 15px; text-align: center; font-size: 14px; }
+        .switch { text-align: center; margin-top: 20px; }
+        a { color: #1765e8; }
+        [hidden] { display: none !important; }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1>❄ ColdChain</h1>
+    <p class="subtitle">Smart Cold Chain Monitoring System</p>
+    <section id="loginView">
+        <form id="loginForm">
+            <label for="loginEmail">Email Address</label>
+            <input type="email" id="loginEmail" name="email" autocomplete="username" required>
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" name="password" autocomplete="current-password" required>
+            <button type="submit" id="loginButton">Login</button>
+            <div id="loginMessage" class="message" role="alert"></div>
+        </form>
+        <p class="switch">Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+    </section>
+    <section id="signupView" hidden>
+        <h2>Create Account</h2>
+        <form id="signupForm">
+            <label for="signupName">Full Name</label>
+            <input type="text" id="signupName" name="name" maxlength="80" autocomplete="name" required>
+            <label for="signupEmail">Email Address</label>
+            <input type="email" id="signupEmail" name="email" maxlength="100" autocomplete="email" required>
+            <label for="signupPassword">Password (at least 8 characters)</label>
+            <input type="password" id="signupPassword" name="password" minlength="8" autocomplete="new-password" required>
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" minlength="8" autocomplete="new-password" required>
+            <button type="submit" id="signupButton">Create Account</button>
+            <div id="signupMessage" class="message" role="alert"></div>
+        </form>
+        <p class="switch">Already registered? <a href="#" id="showLogin">Back to Login</a></p>
+    </section>
+</div>
+<script>
+const loginView = document.getElementById("loginView");
+const signupView = document.getElementById("signupView");
+
+document.getElementById("showSignup").addEventListener("click", event => {
+    event.preventDefault();
+    loginView.hidden = true;
+    signupView.hidden = false;
+});
+document.getElementById("showLogin").addEventListener("click", event => {
+    event.preventDefault();
+    signupView.hidden = true;
+    loginView.hidden = false;
+});
+
+document.getElementById("loginForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const button = document.getElementById("loginButton");
+    const message = document.getElementById("loginMessage");
+    message.textContent = "";
+    message.style.color = "#c53030";
+    button.disabled = true;
+    try {
+        const response = await fetch("api/auth/login", {
+            method: "POST",
+            body: new URLSearchParams(new FormData(event.target)),
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" }
+        });
+        let result = {};
+        try { result = await response.json(); } catch (_) {}
+        if (response.ok && result.success) {
+            window.location.replace("index.html");
+        } else {
+            message.textContent = result.message || `Login failed (HTTP ${response.status}).`;
+        }
+    } catch (_) {
+        message.textContent = "Unable to connect to the server.";
+    } finally {
+        button.disabled = false;
+    }
+});
+
+document.getElementById("signupForm").addEventListener("submit", async event => {
+    event.preventDefault();
+    const form = event.target;
+    const button = document.getElementById("signupButton");
+    const message = document.getElementById("signupMessage");
+    const password = document.getElementById("signupPassword").value;
+    const confirmation = document.getElementById("confirmPassword").value;
+    message.style.color = "#c53030";
+    message.textContent = "";
+    if (password !== confirmation) {
+        message.textContent = "Passwords do not match.";
+        return;
+    }
+    button.disabled = true;
+    try {
+        const response = await fetch("api/auth/signup", {
+            method: "POST",
+            body: new URLSearchParams(new FormData(form)),
+            credentials: "same-origin",
+            headers: { "Accept": "application/json" }
+        });
+        let result = {};
+        try { result = await response.json(); } catch (_) {}
+        if (response.ok && result.success) {
+            message.style.color = "#276749";
+            message.textContent = result.message || "Account created. Your registration may need administrator approval.";
+            form.reset();
+        } else {
+            message.textContent = result.message || `Registration failed (HTTP ${response.status}).`;
+        }
+    } catch (_) {
+        message.textContent = "Unable to connect to the server.";
+    } finally {
+        button.disabled = false;
+    }
+});
+</script>
+</body>
+</html>

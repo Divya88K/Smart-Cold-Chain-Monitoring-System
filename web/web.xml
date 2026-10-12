@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!-- Open login page by default -->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
+
+    <!-- Login servlet -->
+    <servlet>
+        <servlet-name>AuthServlet</servlet-name>
+        <servlet-class>com.coldchain.controller.AuthServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>AuthServlet</servlet-name>
+        <url-pattern>/api/auth/login</url-pattern>
+    </servlet-mapping>
+
+    <!-- Signup servlet -->
+    <servlet>
+        <servlet-name>SignupServlet</servlet-name>
+        <servlet-class>com.coldchain.controller.SignupServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SignupServlet</servlet-name>
+        <url-pattern>/api/auth/signup</url-pattern>
+    </servlet-mapping>
+
+    <!-- Shipment servlet -->
+    <servlet>
+        <servlet-name>ShipmentServlet</servlet-name>
+        <servlet-class>com.coldchain.controller.ShipmentServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ShipmentServlet</servlet-name>
+        <url-pattern>/api/shipments/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- User management servlet -->
+    <servlet>
+        <servlet-name>UsersServlet</servlet-name>
+        <servlet-class>com.coldchain.controller.UsersServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UsersServlet</servlet-name>
+        <url-pattern>/api/users/*</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+    <welcome-file>login.html</welcome-file>
+</welcome-file-list>
+
+</web-app>
